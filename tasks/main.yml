@@ -17,5 +17,9 @@
 - name: Copy firewall init script into place.
   template: src=firewall.j2 dest=/etc/init.d/firewall owner=root group=root mode=0755
 
+- name: Unmask firewall service
+  systemd: daemon_reload=yes name=firewall masked=no
+  notify: restart firewall
+
 - name: Ensure the firewall is enabled and will start on boot.
   service: name=firewall state=started enabled=yes
